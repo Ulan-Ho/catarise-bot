@@ -9,7 +9,7 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 // const PORT = 3000;
-const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
+const token = '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';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
 const openApiKey = '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';
@@ -852,7 +852,7 @@ async function gpt_assistant(userInput) {
         }
       ],
       temperature: 1,
-      max_tokens: 256,
+      max_tokens: 1280,
       top_p: 1,
       frequency_penalty: 1,
       presence_penalty: 1,
