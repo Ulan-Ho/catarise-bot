@@ -9,10 +9,10 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 // const PORT = 3000;
-const token = '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';
+const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
-const openApiKey = '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';
+const openApiKey = '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';
 
 const userStorage = new Map();
 
