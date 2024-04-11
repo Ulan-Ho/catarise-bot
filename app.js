@@ -12,7 +12,7 @@ app.listen(port, () => {
 const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
-const openApiKey = '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';
+const openApiKey = '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';
 
 const userStorage = new Map();
 
