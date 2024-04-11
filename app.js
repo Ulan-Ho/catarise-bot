@@ -6,10 +6,10 @@ dotenv.config();
 
 const app = express();
 const PORT = 3000;
-const token = process.env.TOKEN;
+const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
-const openApiKey = process.env.OPEN_API_KEY;
+const openApiKey = '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';
 
 const userStorage = new Map();
 
