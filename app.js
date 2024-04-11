@@ -1,11 +1,11 @@
-import express from "express";
+// import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from 'dotenv';
 dotenv.config();
 
 
-const app = express();
-const PORT = 3000;
+// const app = express();
+// const PORT = 3000;
 const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
@@ -65,7 +65,7 @@ async function checkMembership(communityId, userId) {
 bot.setMyCommands(commands);
 
 
-app.listen(PORT, () => console.log(`'My server is running on port ${PORT}`));
+// app.listen(PORT, () => console.log(`'My server is running on port ${PORT}`));
 
 
 
