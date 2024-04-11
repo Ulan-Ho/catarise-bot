@@ -397,7 +397,7 @@ bot.on('message', async (msg) => {
                 bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.?`);
                 userData.user_question_1 = 'wait_questions';
                 userStorage.set(chatId, userData);
-            }, 60000);
+            }, 9000000);
 
         } else if ( userData && userData.query == 'да' && userData.stage === 'ai_content' ) {
 
@@ -412,21 +412,21 @@ bot.on('message', async (msg) => {
                     userData.user_question_2 = msg.text;
                     userData.user_question_3 = 'wait_questions';
                     userStorage.set(chatId, userData);
-                }, 180000)
+                }, 9000000)
             } else if ( userData.user_question_3 == 'wait_questions' ) {
                 setTimeout( () => {
                     bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.`);
                     userData.user_question_3 = msg.text;
                     userData.user_question_4 = 'wait_questions';
                     userStorage.set(chatId, userData);
-                }, 180000)
+                }, 9000000)
             } else if ( userData.user_question_4 == 'wait_questions' ) {
                 setTimeout( () => {
                     bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.`);
                     userData.user_question_4 = msg.text;
                     userData.user_question_5 = 'wait_questions';
                     userStorage.set(chatId, userData);
-                }, 180000)
+                }, 9000000)
             } else if ( userData.user_question_5 == 'wait_questions' ) {
                 setTimeout( () => {
                     userData.user_question_5 = msg.text;
@@ -651,7 +651,7 @@ bot.on('message', async (msg) => {
                 bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
                 userData.user_question_1 = 'wait_questions';
                 userStorage.set(chatId, userData);
-            }, 1800000);
+            }, 9000000);
 
         } else if ( userData && userData.query == 'ия' && userData.stage === 'ai_content' ) {
 
@@ -670,7 +670,7 @@ bot.on('message', async (msg) => {
                     userData.user_question_1 = msg.text;
                     userData.user_question_2 = 'wait_questions';
                     userStorage.set(chatId, userData);
-                }, 54000000)
+                }, 9000000)
             } else if ( userData.user_question_2 == 'wait_questions' ) {
                 setTimeout( () => {
 
@@ -678,21 +678,21 @@ bot.on('message', async (msg) => {
                     userData.user_question_2 = msg.text;
                     userData.user_question_3 = 'wait_questions';
                     userStorage.set(chatId, userData);
-                }, 180000)
+                }, 9000000)
             } else if ( userData.user_question_3 == 'wait_questions' ) {
                 setTimeout( () => {
                     bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
                     userData.user_question_3 = msg.text;
                     userData.user_question_4 = 'wait_questions';
                     userStorage.set(chatId, userData);
-                }, 180000)
+                }, 9000000)
             } else if ( userData.user_question_4 == 'wait_questions' ) {
                 setTimeout( () => {
                     bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
                     userData.user_question_4 = msg.text;
                     userData.user_question_5 = 'wait_questions';
                     userStorage.set(chatId, userData);
-                }, 180000)
+                }, 9000000)
             } else if ( userData.user_question_5 == 'wait_questions' ) {
                 setTimeout( () => {
                     userData.user_question_5 = msg.text;
@@ -707,7 +707,7 @@ bot.on('message', async (msg) => {
                         }]]
                     }
                 })
-                }, 180000)
+                }, 9000000)
             } 
         } 
         // else {
