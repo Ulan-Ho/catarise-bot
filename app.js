@@ -64,9 +64,6 @@ async function checkMembership(communityId, userId) {
 
 bot.setMyCommands(commands);
 
-app.get('/',  (req, res) => {
-    res.send('Hello content_bot')
-});
 
 app.listen(PORT, () => console.log(`'My server is running on port ${PORT}`));
 
