@@ -1,10 +1,13 @@
-// import express from "express";
+import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from 'dotenv';
 dotenv.config();
 
-
-// const app = express();
+const app = express();
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 // const PORT = 3000;
 const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
 
