@@ -32,8 +32,6 @@ const users = {
     }
 }
 
-const additional_resources_from_psych = []
-
 const commands = [
     {
         command: "start",
@@ -90,12 +88,11 @@ bot.on('message', async (msg) => {
             userStorage.set(chatId, userData);
 
             await bot.sendMessage(chatId, `Вы подтверждаете, что являетесь совершеннолетним и осознаете, что ответы ИИ несут ознакомительный характер, не являются призывом к действию, и могут быть ошибочными.
-Сіз өзіңіздің кәмелетке толған екеніңізді растайсыз және AI жауаптары ақпараттық сипатта болатынын, әрекетке шақыру емес екенін және қате болуы мүмкін екенін түсінесіз.
-            `);
+Сіз өзіңіздің кәмелетке толған екеніңізді растайсыз және AI жауаптары ақпараттық сипатта болатынын, әрекетке шақыру емес екенін және қате болуы мүмкін екенін түсінесіз.`, { reply_markup: { remove_keyboard: true }});
             
 
 
-            bot.sendMessage(chatId, `Привет, дорогой пользователь. 
+            await bot.sendMessage(chatId, `Привет, дорогой пользователь. 
 Сәлем, құрметті қолданушы.
 Выбери язык: русский, казахский. 
 Тілді таңдаңыз: орыс, қазақ.
@@ -119,7 +116,7 @@ bot.on('message', async (msg) => {
             userData.feedback_stage = 'wait_feedback';
             userStorage.set(chatId, userData);
 
-            bot.sendMessage(chatId, `Поделитесь мнением, что по вашему добавить, что добавить. Прошу отправить все в одном тексте, заранее благодарю :)`);
+            bot.sendMessage(chatId, `Привет! Мы хотим сделать нашу платформу лучше для вас. Пожалуйста, поделитесь своим мнением о нашем сервисе. Что вам понравилось? Что можно улучшить? Ваши идеи и предложения очень ценны для нас! Благодарим за ваше время!`);
 
         } else if (userData && userData.feedback_stage === 'wait_feedback') {
             userData.feedback_stage = 'received';
@@ -147,7 +144,7 @@ bot.on('message', async (msg) => {
 
         } else if (msg.text === '/additional_resources') {
 
-            if ( chatId === users.psych.id || chatId === users.admin.id ) {
+            if ( chatId === users.psych.id || chatId === 6963757337 ) {
 
                 bot.sendMessage(chatId, `Вы в этом боте в роли психолога и имеете право отправлять ресурсы, для этого просто отправляйте все что хотите, ВСЕ сообщения будут отправлены другим как допольнительные ресурсы`, {
                     reply_markup: {
@@ -158,15 +155,13 @@ bot.on('message', async (msg) => {
                     }
                 });
                 userData.all_resourses = 'true';
+                userData.psych_stage = 'wait_resources'
                 userStorage.set(chatId, userData);
 
             } else {
 
-                await bot.sendMessage(chatId, `Контакты для связи с поддержкой если срочно нужна помощь 8777 777 7777`);
-                bot.sendMessage(chatId, `Тут будут собраны наши дополнительные ресурсы, мэйби добавлю возможность для каждого индивидуальные ресурсы`);
-                for ( msg in messageIdToForward ) {
-                    await bot.forwardMessage(chatId, users.admin.id, msg);
-                }
+                await bot.sendMessage(chatId, `Контакты для связи с поддержкой если срочно нужна помощь 87025185030`);
+                bot.sendMessage(chatId, `Тут будут собраны ресурсы подобранные лично для тебя`);
 
             }
             
@@ -191,7 +186,7 @@ bot.on('message', async (msg) => {
 
             } else {
 
-                bot.sendMessage(chatId, `друг, ты можешь вступить в сообщество где, ты сможешь познакомиться с другими участниками, посещать программы по психологии, участвовать в ивент-мероприятиях, первым узнавать о новшествах бесплатно до 05.05.2024`, {
+                await bot.sendMessage(chatId, `Друг, ты можешь вступить в сообщество где, ты сможешь познакомиться с другими участниками, посещать программы по психологии, участвовать в ивент-мероприятиях, первым узнавать о новшествах бесплатно до 05.05.2024`, {
                     reply_markup: {
                         inline_keyboard: [
                             [
@@ -210,12 +205,11 @@ bot.on('message', async (msg) => {
 
         } else if ( userData.psych_stage == 'wait_resources' ) {
 
-            if(userData.user_stage != 'true') {
+            if(userData.user_stage != 'true' && chatId != users.psych.id) {
                 let userIdResourses;
                 let arr = [...userStorage.keys()];
                 
                 for ( let id = 0; id < arr.length; id++ ) {
-                    console.log(arr[id])
                     if ( arr[id] == parseInt(msg.text) ) {
                         userData.user_stage = 'true';
                         userIdResourses = parseInt(msg.text);
@@ -227,6 +221,13 @@ bot.on('message', async (msg) => {
                         continue;
                     }
                 }
+            } else if (userData.all_resourses === 'true') {
+                let arr = [...userStorage.keys()];
+                for( let id = 0; id < arr.length; id++ ) {
+                    bot.forwardMessage(arr[id], chatId, msg.message_id);
+
+                }
+
             } else if ( msg.text == '/send_resources') {
 
                 await bot.sendMessage(chatId, `Вы закончили отправку ресурсов пользователю ${userData.user_id}`);
@@ -236,20 +237,17 @@ bot.on('message', async (msg) => {
                 userStorage.set(chatId, userData);
 
 
-            } else if (userData.all_resourses == 'true') {
+            } else{
 
-                let arr = [...userStorage.keys()];
 
-                for( let id = 0; id < arr.length; id++ ) {
 
-                    bot.forwardMessage(id, chatId, msg.message_id);
+                // let additional_resources_from_psych = userStorage.get(chatId).resourses;
+                // let resourse = { id: userIdResourses, msg_id: msg.message_id};
+                // additional_resources_from_psych.push(resourse);
+                // userData.resourses = [...additional_resources_from_psych];
+                // userStorage.set(userIdResourses, userData);
+                bot.forwardMessage(userData.user_id, chatId, msg.message_id);
 
-                }
-
-            } else {
-
-                let userIdResourses = userData.user_id;
-                bot.forwardMessage(userIdResourses, chatId, msg.message_id);
 
             }
 
@@ -263,7 +261,7 @@ bot.on('message', async (msg) => {
             userData.stage = 'wait_answer_2';
             userStorage.set(chatId, userData);
 
-            bot.sendMessage(chatId, `2. Какие эмоции чаще всего вызывают у вас затруднения или вызывают негативные реакции?`);
+            await bot.sendMessage(chatId, `2. Какие эмоции чаще всего вызывают у вас затруднения или вызывают негативные реакции?`, { reply_markup: { remove_keyboard: true }});
 
         } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_2') {
 
@@ -279,7 +277,16 @@ bot.on('message', async (msg) => {
             userData.stage = 'wait_answer_4';
             userStorage.set(chatId, userData);
 
-            bot.sendMessage(chatId, `4. Какие методы или стратегии вы используете для самоуправления в эмоционально насыщенных ситуациях?`);
+            bot.sendMessage(chatId, `4. Какие методы или стратегии вы используете для самоуправления в эмоционально насыщенных ситуациях?\nМожете отправить свой вариант`, {
+                reply_markup: {
+                    keyboard: [
+                        ['Пытаюсь подавить эмоции'],
+                        ['Фиксирую внимания на что нибудь другое'],
+                        ['Скорее эмоции управляют мной чем я ими'],
+                        ['Делаю глубокий вдох', 'Отстраняюсь и ухожу'],
+                    ]
+                }
+            });
             
         } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_4') {
 
@@ -287,7 +294,7 @@ bot.on('message', async (msg) => {
             userData.stage = 'wait_answer_5';
             userStorage.set(chatId, userData);
 
-            bot.sendMessage(chatId, `5. Чувствуете ли вы необходимость в развитии навыков эмоциональной осведомленности и саморегуляции?`);
+            bot.sendMessage(chatId, `5. Чувствуете ли вы необходимость в развитии навыков эмоциональной осведомленности и саморегуляции?`, { reply_markup: { remove_keyboard: true }});
             
         } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_5') {
 
@@ -311,7 +318,15 @@ bot.on('message', async (msg) => {
             userData.stage = 'wait_answer_8';
             userStorage.set(chatId, userData);
 
-            bot.sendMessage(chatId, `8. Какие виды психологической поддержки или помощи вам кажутся наиболее привлекательными или полезными?`);
+            bot.sendMessage(chatId, `8. Какие виды психологической поддержки или помощи вам кажутся наиболее привлекательными или полезными?`, {
+                reply_markup: {
+                    keyboard: [
+                        ['Личная терапия', 'Самопомощь'],
+                        ['Коллективные работы', 'Гештальт терапия'],
+                        ['Когнитивно - поведенческая терапия']
+                    ]
+                }
+            });
             
         } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_8') {
 
@@ -319,7 +334,7 @@ bot.on('message', async (msg) => {
             userData.stage = 'wait_answer_9';
             userStorage.set(chatId, userData);
 
-            bot.sendMessage(chatId, `9. Считаете ли вы, что лучшая психологическая поддержка для вас – это групповые занятия, индивидуальные консультации или другие формы?`);
+            bot.sendMessage(chatId, `9. Считаете ли вы, что лучшая психологическая поддержка для вас – это групповые занятия, индивидуальные консультации или другие формы?`, { reply_markup: { remove_keyboard: true }});
             
         } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_9') {
 
@@ -379,7 +394,7 @@ bot.on('message', async (msg) => {
             // bot.sendVideo(chatId, './Доп материалы/IMG_5625.MOV');
 
             setTimeout( () => {
-                bot.sendMessage(chatId, `Как вы себя чувствете? Какие эмоции чувствете и почему по вашему вы чувствуете эти эмоции?`);
+                bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.?`);
                 userData.user_question_1 = 'wait_questions';
                 userStorage.set(chatId, userData);
             }, 60000);
@@ -393,21 +408,21 @@ bot.on('message', async (msg) => {
             if ( userData.user_question_2 == 'wait_questions' ) {
                 setTimeout( () => {
 
-                    bot.sendMessage(chatId, `Как вы себя чувствете? Какие эмоции чувствете и почему по вашему вы чувствуете эти эмоции? Если не сможете, все нормально, такое часто происходит с людьми. Но это не значит что мы можем оставить все как есть, Поэтому постарайтесь написать об этом сколько сможете`);
+                    bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.`);
                     userData.user_question_2 = msg.text;
                     userData.user_question_3 = 'wait_questions';
                     userStorage.set(chatId, userData);
                 }, 180000)
             } else if ( userData.user_question_3 == 'wait_questions' ) {
                 setTimeout( () => {
-                    bot.sendMessage(chatId, `Как вы себя чувствете? Какие эмоции чувствете и почему по вашему вы чувствуете эти эмоции? Если не сможете, все нормально, такое часто происходит с людьми. Но это не значит что мы можем оставить все как есть, Поэтому постарайтесь написать об этом сколько сможете`);
+                    bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.`);
                     userData.user_question_3 = msg.text;
                     userData.user_question_4 = 'wait_questions';
                     userStorage.set(chatId, userData);
                 }, 180000)
             } else if ( userData.user_question_4 == 'wait_questions' ) {
                 setTimeout( () => {
-                    bot.sendMessage(chatId, `Как вы себя чувствете? Какие эмоции чувствете и почему по вашему вы чувствуете эти эмоции? Если не сможете, все нормально, такое часто происходит с людьми. Но это не значит что мы можем оставить все как есть, Поэтому постарайтесь написать об этом сколько сможете`);
+                    bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.`);
                     userData.user_question_4 = msg.text;
                     userData.user_question_5 = 'wait_questions';
                     userStorage.set(chatId, userData);
@@ -444,7 +459,7 @@ bot.on('message', async (msg) => {
             userData.stage = 'wait_answer_2';
             userStorage.set(chatId, userData);
 
-            bot.sendMessage(chatId, `2. Сізге қандай эмоциялар жиі қиындық тудырады немесе жағымсыз реакциялар тудырады?`);
+            bot.sendMessage(chatId, `2. Сізге қандай эмоциялар жиі қиындық тудырады немесе жағымсыз реакциялар тудырады?`, {reply_markup: {remove_keyboard: true}});
 
         } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_2') {
 
@@ -482,7 +497,16 @@ bot.on('message', async (msg) => {
             console.log(userData)
 
 
-            bot.sendMessage(chatId, `4. Эмоционалды қарқынды жағдайларда өзіңізді басқару үшін қандай әдістерді немесе стратегияларды қолданасыз?`);
+            bot.sendMessage(chatId, `4. Эмоционалды қарқынды жағдайларда өзіңізді басқару үшін қандай әдістерді немесе стратегияларды қолданасыз?`, {
+                reply_markup: {
+                    keyboard: [
+                        ['Эмоцияны басуға тырысу'],
+                        ['Мен басқа нәрсеге назар аударамын'],
+                        ['Эмоциялар мені олардан гөрі басқарады']
+                        ['Мен терең дем аламын', 'Мен алыстаймын және кетемін'],
+                    ]
+                }
+            });
             
         } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_4') {
             // answer.push(msg.text);
@@ -499,7 +523,7 @@ bot.on('message', async (msg) => {
             console.log(userStorage)
 
 
-            bot.sendMessage(chatId, `5. Сіз эмоцияңызды түсіну мен өзін-өзі реттеу дағдыларын дамыту қажеттілігін сезінесіз бе?`);
+            bot.sendMessage(chatId, `5. Сіз эмоцияңызды түсіну мен өзін-өзі реттеу дағдыларын дамыту қажеттілігін сезінесіз бе?`, {reply_markup: {remove_keyboard: true}});
             
         } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_5') {
             userData.answer.push(msg.text);
@@ -538,7 +562,15 @@ bot.on('message', async (msg) => {
             console.log(userStorage)
 
 
-            bot.sendMessage(chatId, `8. Сізге психологиялық қолдаудың немесе көмектің қандай түрлері ең тартымды немесе пайдалы болып көрінеді?`);
+            bot.sendMessage(chatId, `8. Сізге психологиялық қолдаудың немесе көмектің қандай түрлері ең тартымды немесе пайдалы болып көрінеді?`, {
+                reply_markup: {
+                    keyboard: [
+                        ['Жеке терапия', 'Өзіне-өзі көмектесу'],
+                        ['Ұжымдық жұмыс', 'Гештальт терапиясы'],
+                        ['Когнитивті мінез-құлық терапиясы']
+                    ]
+                }
+            });
             
         } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_8') {
             userData.answer.push(msg.text);
@@ -551,7 +583,7 @@ bot.on('message', async (msg) => {
             console.log(userStorage)
 
 
-            bot.sendMessage(chatId, `9. Сіз үшін ең жақсы психологиялық қолдау топтық сабақтар, жеке кеңестер немесе басқаша формалар деп ойлайсыз ба?`);
+            bot.sendMessage(chatId, `9. Сіз үшін ең жақсы психологиялық қолдау топтық сабақтар, жеке кеңестер немесе басқаша формалар деп ойлайсыз ба?`, {reply_markup: {remove_keyboard: true}});
             
         } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_9') {
             userData.answer.push(msg.text);
@@ -616,10 +648,10 @@ bot.on('message', async (msg) => {
             // bot.sendVideo(chatId, './Доп материалы/IMG_5625.MOV');
 
             setTimeout( () => {
-                bot.sendMessage(chatId, `Сіз өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге сіз бұл эмоцияларды сезінесіз?`);
+                bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
                 userData.user_question_1 = 'wait_questions';
                 userStorage.set(chatId, userData);
-            }, 60000);
+            }, 1800000);
 
         } else if ( userData && userData.query == 'ия' && userData.stage === 'ai_content' ) {
 
@@ -631,24 +663,32 @@ bot.on('message', async (msg) => {
 
         } else if ((userData.user_question_1 == 'wait_questions' || userData.user_question_2 == 'wait_questions' || userData.user_question_3 == 'wait_questions' || userData.user_question_4 == 'wait_questions' || userData.user_question_5 == 'wait_questions') && userData.query == 'ия') {
 
-            if ( userData.user_question_2 == 'wait_questions' ) {
+            if ( userData.user_question_1 == 'wait_questions' ) {
                 setTimeout( () => {
 
-                    bot.sendMessage(chatId, `Сіз өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге сіз бұл эмоцияларды сезінесіз?`);
+                    bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
+                    userData.user_question_1 = msg.text;
+                    userData.user_question_2 = 'wait_questions';
+                    userStorage.set(chatId, userData);
+                }, 54000000)
+            } else if ( userData.user_question_2 == 'wait_questions' ) {
+                setTimeout( () => {
+
+                    bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
                     userData.user_question_2 = msg.text;
                     userData.user_question_3 = 'wait_questions';
                     userStorage.set(chatId, userData);
                 }, 180000)
             } else if ( userData.user_question_3 == 'wait_questions' ) {
                 setTimeout( () => {
-                    bot.sendMessage(chatId, `Сіз өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге сіз бұл эмоцияларды сезінесіз? `);
+                    bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
                     userData.user_question_3 = msg.text;
                     userData.user_question_4 = 'wait_questions';
                     userStorage.set(chatId, userData);
                 }, 180000)
             } else if ( userData.user_question_4 == 'wait_questions' ) {
                 setTimeout( () => {
-                    bot.sendMessage(chatId, `Сіз өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге сіз бұл эмоцияларды сезінесіз?`);
+                    bot.sendMessage(chatId, `Қазір өзіңізді қалай сезінесіз? Сіз қандай эмоцияларды сезінесіз және неге? Егер сипаттау қиын болса, бұл жақсы. Өз сезімдеріңіз туралы айтуға тырысыңыз, бұл сізге өзіңізді жақсы түсінуге көмектеседі.`);
                     userData.user_question_4 = msg.text;
                     userData.user_question_5 = 'wait_questions';
                     userStorage.set(chatId, userData);
@@ -739,14 +779,32 @@ bot.on('callback_query', async (query) => {
         userData.query = query.data;
         userStorage.set(chatId, userData);
 
-        bot.sendMessage(chatId, `1. Как вы оцениваете свой текущий уровень эмоциональной устойчивости?`);
+        bot.sendMessage(chatId, `1. Как вы оцениваете свой текущий уровень эмоциональной устойчивости?`, {
+            reply_markup: {
+                keyboard: [
+                    [ '1', '2', '3', '4'],
+                    [ '5', '6', '7', '8'],
+                    [ '9', '10']
+
+                ]
+            }
+        });
 
     } else if ( query.data == 'ия' ) {
         userData.stage = 'wait_answer_1';
         userData.query = query.data;
         userStorage.set(chatId, userData);
 
-        bot.sendMessage(chatId, `1. Сіз өзіңіздің қазіргі эмоционалды тұрақтылық деңгейіңізді қалай бағалайсыз?`);
+        bot.sendMessage(chatId, `1. Сіз өзіңіздің қазіргі эмоционалды тұрақтылық деңгейіңізді қалай бағалайсыз?`, {
+            reply_markup: {
+                keyboard: [
+                    [ '1', '2', '3', '4'],
+                    [ '5', '6', '7', '8'],
+                    [ '9', '10']
+
+                ]
+            }
+        });
 
     } else if ( query.data == 'chat_therapy') {
         userData.chat_stage = 'ai_content';
@@ -755,7 +813,8 @@ bot.on('callback_query', async (query) => {
         bot.sendMessage(chatId, `Здраствуйте, чем могу помочь? Задавайте свои вопросы`);
 
     }  else if ( query.data === 'sendResourses' ) {
-        if ( chatId == users.admin.id ) {
+
+        if ( chatId == users.psych.id ) {
 
             userData.psych_stage = 'wait_resources';
             userStorage.set(chatId, userData);
@@ -769,6 +828,7 @@ bot.on('callback_query', async (query) => {
     }  else if ( query.data === 'stop_send_all_resourses' ) {
         userData.all_resourses = 'false';
         userStorage.set(chatId, userData);
+        bot.sendMessage(chatId, `Вы перестали отправлять всем ресурсы`)
     } else if ( query.data == 'end') {
 
     }
