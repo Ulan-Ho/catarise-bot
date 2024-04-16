@@ -100,9 +100,7 @@ bot.on('message', async (msg) => {
 
                     var notificationTime = new Date();
                     notificationTime.setHours(notificationTimes[i], 0, 0,0);
-                    var timeDiff = notificationTime.getTime() - Date.now();
-                    console.log( timeDiff )
-                
+                    var timeDiff = notificationTime.getTime() - Date.now();                
                     // Проверяем, что уведомление должно быть отправлено в допустимое время
                     if (timeDiff > 0) { 
 
