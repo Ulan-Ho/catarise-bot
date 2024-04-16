@@ -95,7 +95,7 @@ bot.on('message', async (msg) => {
         var currentHour = currentTime.getHours();
         
         return currentHour >= 7 && currentHour < 23;
-        }
+    }
         
         
         
@@ -116,10 +116,6 @@ bot.on('message', async (msg) => {
         
         }, 60000); // интервал в миллисекундах (60 секунд = 60000 миллисекунд)
         
-        // Показываем уведомление сразу, если текущее время допустимо
-        if (isNotificationTime()) {
-        sendBotMessage();
-        }
 
 
     try {
