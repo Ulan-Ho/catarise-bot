@@ -89,7 +89,7 @@ bot.on('message', async (msg) => {
         var currentHour = currentTime.getHours();
 
         
-        return currentHour >= 7 && currentHour < 24;
+        return currentHour >= 7 && currentHour <= 23;
     }        
         setInterval(function() {
             if (isNotificationTime()) {
