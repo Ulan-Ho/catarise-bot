@@ -1,4 +1,4 @@
-import express from "express";
+  import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from 'dotenv';
 dotenv.config();
@@ -84,37 +84,34 @@ bot.on('message', async (msg) => {
 
     userData.answer = [];
     
-    function sendBotMessage() {
-        bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.?`);
-        userData.user_question_1 = 'wait_questions';
-        userStorage.set(chatId, userData);
-    }
-
     function isNotificationTime() {
         var currentTime = new Date();
         var currentHour = currentTime.getHours();
+
         
-        return currentHour >= 7 && currentHour < 23;
-    }
-        
-        
-        
+        return currentHour >= 7 && currentHour < 24;
+    }        
         setInterval(function() {
             if (isNotificationTime()) {
         
+    
+                var notificationTimes = [7, 11, 15, 19, 23]; // Время в часах для уведомлений
+                for (var i = 0; i < notificationTimes.length; i++) {
+
+                    var notificationTime = new Date();
+                    notificationTime.setHours(notificationTimes[i], 0, 0,0);
+                    var timeDiff = notificationTime.getTime() - Date.now();
+                    console.log( timeDiff )
+                
+                    // Проверяем, что уведомление должно быть отправлено в допустимое время
+                    if (timeDiff > 0) { 
+                        bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.?`);
+
+                    }
+                }
+                }
         
-            var notificationTimes = [7, 11, 15, 19, 23]; // Время в часах для уведомлений
-            for (var i = 0; i < notificationTimes.length; i++) {
-                var notificationTime = new Date();
-                notificationTime.setHours(notificationTimes[i], 0, 0, 0);
-                var timeDiff = notificationTime.getTime() - Date.now();
-            
-                // Проверяем, что уведомление должно быть отправлено в допустимое время
-                if (timeDiff == 0) { setTimeout(sendBotMessage, timeDiff); }
-            }
-            }
-        
-        }, 60000); // интервал в миллисекундах (60 секунд = 60000 миллисекунд)
+        }, 60000);
         
 
 
