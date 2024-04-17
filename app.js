@@ -37,6 +37,10 @@ const users = {
 
 const commands = [
     {
+        command: "continue", 
+        description: "Продолжить"
+    },
+    {
         command: "chat_therapy",
         description: "Чат-терапия"
     },
@@ -119,9 +123,6 @@ bot.on('message', async (msg) => {
 
     try {
 /*----------------------------------------------------------------------COMMAND--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-        if (userData.complete_stage === 'true') {
-            bot.sendMessage( chatId, `Спасибо что был с нами! Мы проделали долгий путь и полезный путь` )
-        } else {
             if( msg.text && msg.text.startsWith("/start") && !userData.complete_stage){
                 console.log(chatId);
                 userStorage.set(chatId, userData);
@@ -155,6 +156,20 @@ bot.on('message', async (msg) => {
                         ]
                     }
                 });
+            } else if ( msg.text === '/continue' ) {
+                
+                bot.sendMessage(chatId, `С возврашением пользователь! Давай мы заново пройдемся по твоему памяти и вспомним о нас`);
+                await bot.sendMessage(chatId, `Мы твой личный психологический помощник-друг.`);
+                await bot.sendMessage(chatId, `Что может получить пользователь\nЗдесь ты можешь: обучиться эмоциональному интеллекту, выговориться, получить обратную связь, и это все абсолютно конфиденциально.`);
+                await bot.sendMessage(chatId, `Как работает наш чат-бот:\nПервый шаг-это пройти тест, где ты сможешь увидеть свое состояние на данный момент. каждый день, ты будешь получать новое, обучающее видео по эмоциональному интеллекту, если ты хочешь рассказать о каком-то болезненном моменте, тебе следует перейти в чат-терапию. После 5 раз в день, ты будешь получать сообщение, которое будет узнавать о ваших эмоциях в определенный момент, эта практика, поможет тебе понимать свои чувства.\nХочешь заного пройти опрос?`, {
+                    reply_markup: {
+                        inline_keyboard: [[{
+                            text: 'Да!',
+                            callback_data: 'да'
+                        }]]
+                    }
+                });
+                
             } else if (msg.text === '/feedback') {
                 userData.feedback_stage = 'wait_feedback';
                 userStorage.set(chatId, userData);
@@ -210,12 +225,8 @@ bot.on('message', async (msg) => {
                 
             } else if ( msg.text === '/complete') {
 
-                if ( userData.resources_stage && userData.community_stage && userData.answer_stage ) {
-                    if ( userData.query === 'да' ) {
 
-                        userData.range = 3;
-                        userData.complete_stage = 'true';
-                        userStorage.set(chatId, userData);
+                    if ( userData.query === 'да' ) {
 
                         bot.sendMessage(chatId, `Спасибо, дорогой друг, сегодня ты сделал свою жизнь чуточку лучше!\nПроведи оплату прямо сейчас и получи скидку 80%- 1200 тг`, {
                             reply_markup: {
@@ -228,9 +239,6 @@ bot.on('message', async (msg) => {
                         });
                     } else if ( userData.query === 'ия' ) {
 
-                        userData.complete_stage = 'true';
-                        userStorage.set(chatId, userData);
-
                         bot.sendMessage(chatId, `Рахмет, қымбатты досым, бүгін сен өз өміріңді біршама жақсарттың!\nТөлемді дәл қазір жүргізіп, 80% жеңілдік алыңыз-1200 тг`, {
                             reply_markup: {
                                 inline_keyboard: [[{
@@ -241,23 +249,6 @@ bot.on('message', async (msg) => {
                             }
                         });
                     }
-                } else {
-
-                    if( (userData.resources_stage && userData.community_stage) || (userData.community_stage && userData.answer_stage) || (userData.answer_stage && userData.resources_stage)){
-                        userData.range += 2
-                        bot.sendMessage(chatId, `Как только вы дойдете до определнного ранга вам откроется возможность завершить терапию. В данный момент ваш ранг ${userData.range}`);
-                    } else if (userData.community_stage || userData.answer_stage || userData.resources_stage) {
-                        userData.range += 1
-                        bot.sendMessage(chatId, `Как только вы дойдете до определнного ранга вам откроется возможность завершить терапию. В данный момент ваш ранг ${userData.range}`);
-                    } else {
-                        bot.sendMessage(chatId, `Как только вы дойдете до определнного ранга вам откроется возможность завершить терапию. В данный момент ваш ранг ${userData.range}`);
-
-                    }
-
-            
-
-                }
-
 
             } else if ( msg.text === '/community_support' ) {
 
@@ -689,7 +680,6 @@ bot.on('message', async (msg) => {
 
             } 
         }
-    } 
     catch(error) {
 
         console.log(error);
