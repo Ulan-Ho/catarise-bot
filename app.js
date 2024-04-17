@@ -118,11 +118,7 @@ bot.on('message', async (msg) => {
 
             }
         }
-    }
-
-    setReminders();
-    setInterval( setReminders, bigInterval);
-        
+    }        
 
 
     try {
@@ -133,6 +129,10 @@ bot.on('message', async (msg) => {
             if( msg.text && msg.text.startsWith("/start") && !userData.complete_stage){
                 console.log(chatId);
                 userStorage.set(chatId, userData);
+
+                setReminders();
+                setInterval( setReminders, bigInterval);
+
 
                 await bot.sendMessage(chatId, `Вы подтверждаете, что являетесь совершеннолетним и осознаете, что ответы ИИ несут ознакомительный характер, не являются призывом к действию, и могут быть ошибочными.
     Сіз өзіңіздің кәмелетке толған екеніңізді растайсыз және AI жауаптары ақпараттық сипатта болатынын, әрекетке шақыру емес екенін және қате болуы мүмкін екенін түсінесіз.`, { reply_markup: { remove_keyboard: true }});
