@@ -17,7 +17,7 @@ const openApiKey = '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';
 const userStorage = new Map();
 
 
-
+console.log(new Date().getHours())
 const users = {
     admin: {
         id: 6564665663,
@@ -111,8 +111,10 @@ bot.on('message', async (msg) => {
 
                 let wait_time = send_time - Date.now();
 
-                setTimeout(sendBotMessage, wait_time);
-                console.log(wait_time)
+                if ( wait_time > 0 ) {
+                    setTimeout(sendBotMessage, wait_time);
+                    console.log(wait_time)
+                }
 
             }
         }
