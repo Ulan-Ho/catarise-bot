@@ -37,10 +37,6 @@ const users = {
 
 const commands = [
     {
-        command: "start",
-        description: "Запуск"
-    },
-    {
         command: "chat_therapy",
         description: "Чат-терапия"
     },
@@ -118,24 +114,7 @@ bot.on('message', async (msg) => {
 
             }
         }
-    }        
-
-
-    let send_time = new Date();
-    send_time.setHours(6 , 40, 0, 0);
-    let wait_time = send_time - Date.now();
-
-    setTimeout( () => {
-        bot.sendMessage(957446580, `srfsdfs`);
-    }, wait_time);
-
-    let send_time_1 = new Date();
-    send_time_1.setHours(6 , 45, 0, 0);
-    let wait_time_1 = send_time_1 - Date.now();
-    setTimeout( () => {
-        bot.sendMessage(957446580, `srfsdfs`);
-    }, wait_time_1);
-
+    }
 
 
     try {
