@@ -121,6 +121,7 @@ bot.on('message', async (msg) => {
 
     setReminders();
     setInterval( setReminders, bigInterval);
+        
 
 
     try {
@@ -138,11 +139,11 @@ bot.on('message', async (msg) => {
 
 
                 await bot.sendMessage(chatId, `Привет, дорогой пользователь. 
-    Сәлем, құрметті қолданушы.
-    Выбери язык: русский, казахский. 
-    Тілді таңдаңыз: орыс, қазақ.
-    Мы твой личный психологический помощник-друг. 
-    Біз сіздің жеке психологиялық көмекшіңіз-досымыз.
+Сәлем, құрметті қолданушы.
+Выбери язык: русский, казахский. 
+Тілді таңдаңыз: орыс, қазақ.
+Мы твой личный психологический помощник-друг. 
+Біз сіздің жеке психологиялық көмекшіңіз-досымыз.
                 `, {
                     reply_markup: {
                         inline_keyboard: [[
@@ -435,16 +436,16 @@ bot.on('message', async (msg) => {
                 userStorage.set(chatId, userData);
 
                 bot.sendMessage(users.psych.id, `Это id пользователя ${chatId} 
-    1.${userStorage.get(chatId).answer_1}
-    2.${userStorage.get(chatId).answer_2}
-    3.${userStorage.get(chatId).answer_3}
-    4.${userStorage.get(chatId).answer_4}
-    5.${userStorage.get(chatId).answer_5}
-    6.${userStorage.get(chatId).answer_6}
-    7.${userStorage.get(chatId).answer_7}
-    8.${userStorage.get(chatId).answer_8}
-    9.${userStorage.get(chatId).answer_9}
-    10.${userStorage.get(chatId).answer_10}`, {
+1.${userStorage.get(chatId).answer_1}
+2.${userStorage.get(chatId).answer_2}
+3.${userStorage.get(chatId).answer_3}
+4.${userStorage.get(chatId).answer_4}
+5.${userStorage.get(chatId).answer_5}
+6.${userStorage.get(chatId).answer_6}
+7.${userStorage.get(chatId).answer_7}
+8.${userStorage.get(chatId).answer_8}
+9.${userStorage.get(chatId).answer_9}
+10.${userStorage.get(chatId).answer_10}`, {
         reply_markup: {
             inline_keyboard: [
                 [
@@ -632,16 +633,16 @@ bot.on('message', async (msg) => {
                 await userStorage.set(chatId, userData);
 
                 bot.sendMessage(users.psych.id, `Это id пользователя ${chatId} 
-    1.${userStorage.get(chatId).answer_1}
-    2.${userStorage.get(chatId).answer_2}
-    3.${userStorage.get(chatId).answer_3}
-    4.${userStorage.get(chatId).answer_4}
-    5.${userStorage.get(chatId).answer_5}
-    6.${userStorage.get(chatId).answer_6}
-    7.${userStorage.get(chatId).answer_7}
-    8.${userStorage.get(chatId).answer_8}
-    9.${userStorage.get(chatId).answer_9}
-    10.${userStorage.get(chatId).answer_10}`, {
+1.${userStorage.get(chatId).answer_1}
+2.${userStorage.get(chatId).answer_2}
+3.${userStorage.get(chatId).answer_3}
+4.${userStorage.get(chatId).answer_4}
+5.${userStorage.get(chatId).answer_5}
+6.${userStorage.get(chatId).answer_6}
+7.${userStorage.get(chatId).answer_7}
+8.${userStorage.get(chatId).answer_8}
+9.${userStorage.get(chatId).answer_9}
+10.${userStorage.get(chatId).answer_10}`, {
         reply_markup: {
             inline_keyboard: [
                 [
