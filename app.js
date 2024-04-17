@@ -9,7 +9,7 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 // const PORT = 3000;
-const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
+const token = '6824105909:AAErF7Y9rJ5Qxofr0uMW2Dvo6fEt1ktila4';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
 const openApiKey = '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';
@@ -86,36 +86,41 @@ bot.on('message', async (msg) => {
     
     function sendBotMessage() {
         bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.?`);
-        userData.user_question_1 = 'wait_questions';
-        userStorage.set(chatId, userData);
+    }
+    const bigInterval = 18 * 60* 60 * 1000;
+
+    function setReminders() {
+    
+        // Задаем начальное время как 7:00
+        const startTime = new Date();
+        startTime.setHours(7, 0, 0, 0);
+    
+        // Задаем конечное время как 23:00
+        const endTime = new Date();
+        endTime.setHours(23, 0, 0, 0);
+    
+
+        let times_arr = [7, 11, 15, 19, 23];
+        // let minute_arr = [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
+        let currentTime = startTime.getTime();
+        if (currentTime <= endTime.getTime()) {
+
+            for (let i = 0; i < times_arr.length; i++ ) {
+
+                let send_time = new Date();
+                send_time.setHours(9, times_arr[i], 0, 0);
+
+                let wait_time = send_time - Date.now();
+
+                setTimeout(sendBotMessage, wait_time);
+                console.log(wait_time)
+
+            }
+        }
     }
 
-    function isNotificationTime() {
-        var currentTime = new Date();
-        var currentHour = currentTime.getHours();
-        
-        return currentHour >= 7 && currentHour < 23;
-    }
-        
-        
-        
-        setInterval(function() {
-            if (isNotificationTime()) {
-        
-        
-            var notificationTimes = [7, 11, 15, 19, 23]; // Время в часах для уведомлений
-            for (var i = 0; i < notificationTimes.length; i++) {
-                var notificationTime = new Date();
-                notificationTime.setHours(notificationTimes[i], 0, 0, 0);
-                var timeDiff = notificationTime.getTime() - Date.now();
-            
-                // Проверяем, что уведомление должно быть отправлено в допустимое время
-                if (timeDiff == 0) { setTimeout(sendBotMessage, timeDiff); }
-            }
-            }
-        
-        }, 60000); // интервал в миллисекундах (60 секунд = 60000 миллисекунд)
-        
+    setReminders();
+    setInterval( setReminders, bigInterval);
 
 
     try {
