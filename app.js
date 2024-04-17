@@ -9,7 +9,7 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 // const PORT = 3000;
-const token = '6824105909:AAErF7Y9rJ5Qxofr0uMW2Dvo6fEt1ktila4';
+const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
 const openApiKey = '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';
@@ -79,7 +79,6 @@ bot.setMyCommands(commands);
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     const userData = userStorage.get(chatId) || {};
-    const messageIdToForward = [];
     userData.range = 0;
 
     userData.answer = [];
@@ -108,7 +107,7 @@ bot.on('message', async (msg) => {
             for (let i = 0; i < times_arr.length; i++ ) {
 
                 let send_time = new Date();
-                send_time.setHours(9, times_arr[i], 0, 0);
+                send_time.setHours(times_arr[i] , 0, 0, 0);
 
                 let wait_time = send_time - Date.now();
 
@@ -216,6 +215,7 @@ bot.on('message', async (msg) => {
                 if ( userData.resources_stage && userData.community_stage && userData.answer_stage ) {
                     if ( userData.query === 'да' ) {
 
+                        userData.range = 3;
                         userData.complete_stage = 'true';
                         userStorage.set(chatId, userData);
 
