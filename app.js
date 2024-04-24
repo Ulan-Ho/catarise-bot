@@ -9,7 +9,7 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 // const PORT = 3000;
-const token = '6824105909:AAErF7Y9rJ5Qxofr0uMW2Dvo6fEt1ktila4';
+const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
 const openApiKey = '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';
