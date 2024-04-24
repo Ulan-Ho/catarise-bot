@@ -9,12 +9,13 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 // const PORT = 3000;
-const token = '7011738182:AAFIT_nJFg6qlIi28IRJAttbmAsJAjPmdcs';
+const token = '6824105909:AAErF7Y9rJ5Qxofr0uMW2Dvo6fEt1ktila4';
 
 let bot = new TelegramBot(token, {polling: {interval: 300, autoStart: true}});
 const openApiKey = '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';
 
 const userStorage = new Map();
+
 
 
 console.log(new Date().getHours())
@@ -166,21 +167,27 @@ bot.on('message', async (msg) => {
                 });
             }  else if ( msg.text === '/continue' ) {
                 
+                let continue_keyboard = [
+                    ["/chat_therapy"],
+                    ["/additional_resources"],
+                    ["/community"]
+                ]
+
+                let continue_options = {
+                    reply_markup: JSON.stringify({
+                        keyboard: continue_keyboard,
+                        resize_keyboard: true,
+                        one_time_keyboard: true,
+                        selective: true
+                    })
+                };
                 
                 bot.sendMessage(chatId, `С возврашением пользователь! Давай мы заново пройдемся по твоему памяти и вспомним о нас`);
                 await bot.sendMessage(chatId, `Мы твой личный психологический помощник-друг.`);
                 await bot.sendMessage(chatId, `Что может получить пользователь\nЗдесь ты можешь: обучиться эмоциональному интеллекту, выговориться, получить обратную связь, и это все абсолютно конфиденциально.`);
                 await bot.sendMessage(chatId, `Как работает наш чат-бот:\nПервый шаг-это пройти тест, где ты сможешь увидеть свое состояние на данный момент. каждый день, ты будешь получать новое, обучающее видео по эмоциональному интеллекту, если ты хочешь рассказать о каком-то болезненном моменте, тебе следует перейти в чат-терапию. После 5 раз в день, ты будешь получать сообщение, которое будет узнавать о ваших эмоциях в определенный момент, эта практика, поможет тебе понимать свои чувства.`);
                 await bot.sendVideo(chatId, './Доп материалы/IMG_5621.MOV');
-                await bot.sendMessage(chatId, `На чем продолжим?`, {
-                    reply_markup: {
-                        keyboard: [
-                            ["/chat_therapy"],
-                            ["/additional_resources"],
-                            ["/community"]
-                        ]
-                    }
-                })
+                await bot.sendMessage(chatId, `На чем продолжим?`, continue_options)
                 
             } else if ( msg.text === '/community') {
                 bot.sendMessage(chatId, `Залетайте в наше сообщество :)`, {
@@ -370,7 +377,7 @@ bot.on('message', async (msg) => {
                 userData.stage = 'wait_answer_2';
                 userStorage.set(chatId, userData);
 
-                await bot.sendMessage(chatId, `2. Какие эмоции чаще всего вызывают у вас затруднения или вызывают негативные реакции?`, { reply_markup: { remove_keyboard: true }});
+                await bot.sendMessage(chatId, `2. Какие эмоции чаще всего вызывают у вас затруднения или вызывают негативные реакции?`);
 
             } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_2') {
 
@@ -386,16 +393,23 @@ bot.on('message', async (msg) => {
                 userData.stage = 'wait_answer_4';
                 userStorage.set(chatId, userData);
 
-                bot.sendMessage(chatId, `4. Какие методы или стратегии вы используете для самоуправления в эмоционально насыщенных ситуациях?\nМожете отправить свой вариант`, {
-                    reply_markup: {
-                        keyboard: [
-                            ['Пытаюсь подавить эмоции'],
-                            ['Фиксирую внимания на что нибудь другое'],
-                            ['Скорее эмоции управляют мной чем я ими'],
-                            ['Делаю глубокий вдох', 'Отстраняюсь и ухожу'],
-                        ]
-                    }
-                });
+                let question_3_keyboard = [
+                    ['Пытаюсь подавить эмоции'],
+                    ['Фиксирую внимания на что нибудь другое'],
+                    ['Скорее эмоции управляют мной чем я ими'],
+                    ['Делаю глубокий вдох', 'Отстраняюсь и ухожу'],
+                ]
+
+                let question_3_options = {
+                    reply_markup: JSON.stringify({
+                        keyboard: question_3_keyboard,
+                        resize_keyboard: true,
+                        one_time_keyboard: true,
+                        selective: true
+                    })
+                };
+
+                bot.sendMessage(chatId, `4. Какие методы или стратегии вы используете для самоуправления в эмоционально насыщенных ситуациях?\nМожете отправить свой вариант`, question_3_options);
                 
             } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_4') {
 
@@ -403,7 +417,7 @@ bot.on('message', async (msg) => {
                 userData.stage = 'wait_answer_5';
                 userStorage.set(chatId, userData);
 
-                bot.sendMessage(chatId, `5. Чувствуете ли вы необходимость в развитии навыков эмоциональной осведомленности и саморегуляции?`, { reply_markup: { remove_keyboard: true }});
+                bot.sendMessage(chatId, `5. Чувствуете ли вы необходимость в развитии навыков эмоциональной осведомленности и саморегуляции?`);
                 
             } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_5') {
 
@@ -427,15 +441,22 @@ bot.on('message', async (msg) => {
                 userData.stage = 'wait_answer_8';
                 userStorage.set(chatId, userData);
 
-                bot.sendMessage(chatId, `8. Какие виды психологической поддержки или помощи вам кажутся наиболее привлекательными или полезными?`, {
-                    reply_markup: {
-                        keyboard: [
-                            ['Личная терапия', 'Самопомощь'],
-                            ['Коллективные работы', 'Гештальт терапия'],
-                            ['Когнитивно - поведенческая терапия']
-                        ]
-                    }
-                });
+                let question_8_keyboard = [
+                    ['Личная терапия', 'Самопомощь'],
+                    ['Коллективные работы', 'Гештальт терапия'],
+                    ['Когнитивно - поведенческая терапия']
+                ]
+
+                let question_8_options = {
+                    reply_markup: JSON.stringify({
+                        keyboard: question_8_keyboard,
+                        resize_keyboard: true,
+                        one_time_keyboard: true,
+                        selective: true
+                    })
+                };
+
+                bot.sendMessage(chatId, `8. Какие виды психологической поддержки или помощи вам кажутся наиболее привлекательными или полезными?`, question_8_options);
                 
             } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_8') {
 
@@ -443,7 +464,7 @@ bot.on('message', async (msg) => {
                 userData.stage = 'wait_answer_9';
                 userStorage.set(chatId, userData);
 
-                bot.sendMessage(chatId, `9. Считаете ли вы, что лучшая психологическая поддержка для вас – это групповые занятия, индивидуальные консультации или другие формы?`, { reply_markup: { remove_keyboard: true }});
+                bot.sendMessage(chatId, `9. Считаете ли вы, что лучшая психологическая поддержка для вас – это групповые занятия, индивидуальные консультации или другие формы?`);
                 
             } else if (userData && userData.query == 'да' && userData.stage === 'wait_answer_9') {
 
@@ -521,7 +542,7 @@ bot.on('message', async (msg) => {
                 userData.stage = 'wait_answer_2';
                 userStorage.set(chatId, userData);
 
-                bot.sendMessage(chatId, `2. Сізге қандай эмоциялар жиі қиындық тудырады немесе жағымсыз реакциялар тудырады?`, {reply_markup: {remove_keyboard: true}});
+                bot.sendMessage(chatId, `2. Сізге қандай эмоциялар жиі қиындық тудырады немесе жағымсыз реакциялар тудырады?`);
 
             } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_2') {
 
@@ -556,19 +577,26 @@ bot.on('message', async (msg) => {
 
                 userData.stage = 'wait_answer_4';
                 userStorage.set(chatId, userData);
-                console.log(userData)
+                console.log(userData);
+
+                let question_kz_4_keyboard = [
+                    ['Эмоцияны басуға тырысу'],
+                    ['Мен басқа нәрсеге назар аударамын'],
+                    ['Эмоциялар мені олардан гөрі басқарады']
+                    ['Мен терең дем аламын', 'Мен алыстаймын және кетемін'],
+                ]
+
+                let question_kz_4_options = {
+                    reply_markup: JSON.stringify({
+                        keyboard: question_kz_4_keyboard,
+                        resize_keyboard: true,
+                        one_time_keyboard: true,
+                        selective: true
+                    })
+                };
 
 
-                bot.sendMessage(chatId, `4. Эмоционалды қарқынды жағдайларда өзіңізді басқару үшін қандай әдістерді немесе стратегияларды қолданасыз?`, {
-                    reply_markup: {
-                        keyboard: [
-                            ['Эмоцияны басуға тырысу'],
-                            ['Мен басқа нәрсеге назар аударамын'],
-                            ['Эмоциялар мені олардан гөрі басқарады']
-                            ['Мен терең дем аламын', 'Мен алыстаймын және кетемін'],
-                        ]
-                    }
-                });
+                await bot.sendMessage(chatId, `4. Эмоционалды қарқынды жағдайларда өзіңізді басқару үшін қандай әдістерді немесе стратегияларды қолданасыз?`, question_kz_4_options);
                 
             } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_4') {
                 // answer.push(msg.text);
@@ -585,7 +613,7 @@ bot.on('message', async (msg) => {
                 console.log(userStorage)
 
 
-                bot.sendMessage(chatId, `5. Сіз эмоцияңызды түсіну мен өзін-өзі реттеу дағдыларын дамыту қажеттілігін сезінесіз бе?`, {reply_markup: {remove_keyboard: true}});
+                bot.sendMessage(chatId, `5. Сіз эмоцияңызды түсіну мен өзін-өзі реттеу дағдыларын дамыту қажеттілігін сезінесіз бе?`);
                 
             } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_5') {
                 userData.answer.push(msg.text);
@@ -615,18 +643,25 @@ bot.on('message', async (msg) => {
                 userData.answer_7 = msg.text;
                 userData.stage = 'wait_answer_8';
                 userStorage.set(chatId, userData);
-                console.log(userStorage)
+                console.log(userStorage);
+
+                let question_kz_8_keyboard = [
+                    ['Жеке терапия', 'Өзіне-өзі көмектесу'],
+                    ['Ұжымдық жұмыс', 'Гештальт терапиясы'],
+                    ['Когнитивті мінез-құлық терапиясы']
+                ]
+
+                let question_kz_8_options = {
+                    reply_markup: JSON.stringify({
+                        keyboard: question_kz_8_keyboard,
+                        resize_keyboard: true,
+                        one_time_keyboard: true,
+                        selective: true
+                    })
+                };
 
 
-                bot.sendMessage(chatId, `8. Сізге психологиялық қолдаудың немесе көмектің қандай түрлері ең тартымды немесе пайдалы болып көрінеді?`, {
-                    reply_markup: {
-                        keyboard: [
-                            ['Жеке терапия', 'Өзіне-өзі көмектесу'],
-                            ['Ұжымдық жұмыс', 'Гештальт терапиясы'],
-                            ['Когнитивті мінез-құлық терапиясы']
-                        ]
-                    }
-                });
+                bot.sendMessage(chatId, `8. Сізге психологиялық қолдаудың немесе көмектің қандай түрлері ең тартымды немесе пайдалы болып көрінеді?`, question_kz_8_options);
                 
             } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_8') {
                 userData.answer.push(msg.text);
@@ -637,7 +672,7 @@ bot.on('message', async (msg) => {
                 console.log(userStorage)
 
 
-                bot.sendMessage(chatId, `9. Сіз үшін ең жақсы психологиялық қолдау топтық сабақтар, жеке кеңестер немесе басқаша формалар деп ойлайсыз ба?`, {reply_markup: {remove_keyboard: true}});
+                bot.sendMessage(chatId, `9. Сіз үшін ең жақсы психологиялық қолдау топтық сабақтар, жеке кеңестер немесе басқаша формалар деп ойлайсыз ба?`);
                 
             } else if (userData && userData.query == 'ия' && userData.stage === 'wait_answer_9') {
                 userData.answer.push(msg.text);
@@ -723,6 +758,21 @@ bot.on('callback_query', async (query) => {
     const chatId = query.message.chat.id;
     const userData = userStorage.get(chatId) || {};
 
+    let question_1_keyboard = [
+        [ '1', '2', '3', '4'],
+        [ '5', '6', '7', '8'],
+        [ '9', '10']
+
+    ]
+
+    let question_1_options = {
+        reply_markup: JSON.stringify({
+            keyboard: question_1_keyboard,
+            resize_keyboard: true,
+            one_time_keyboard: true,
+            selective: true
+        })
+    };
 
     if ( query.data == 'русский' ) {
         userData.query = query.data;
@@ -765,32 +815,14 @@ bot.on('callback_query', async (query) => {
         userData.query = query.data;
         userStorage.set(chatId, userData);
 
-        bot.sendMessage(chatId, `1. Как вы оцениваете свой текущий уровень эмоциональной устойчивости?`, {
-            reply_markup: {
-                keyboard: [
-                    [ '1', '2', '3', '4'],
-                    [ '5', '6', '7', '8'],
-                    [ '9', '10']
-
-                ]
-            }
-        });
+        bot.sendMessage(chatId, `1. Как вы оцениваете свой текущий уровень эмоциональной устойчивости?`, question_1_options);
 
     } else if ( query.data == 'ия' ) {
         userData.stage = 'wait_answer_1';
         userData.query = query.data;
         userStorage.set(chatId, userData);
 
-        bot.sendMessage(chatId, `1. Сіз өзіңіздің қазіргі эмоционалды тұрақтылық деңгейіңізді қалай бағалайсыз?`, {
-            reply_markup: {
-                keyboard: [
-                    [ '1', '2', '3', '4'],
-                    [ '5', '6', '7', '8'],
-                    [ '9', '10']
-
-                ]
-            }
-        });
+        bot.sendMessage(chatId, `1. Сіз өзіңіздің қазіргі эмоционалды тұрақтылық деңгейіңізді қалай бағалайсыз?`, question_1_options);
 
     } else if ( query.data == 'chat_therapy') {
         userData.chat_stage = 'ai_content';
