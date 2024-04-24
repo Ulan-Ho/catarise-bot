@@ -175,7 +175,9 @@ bot.on('message', async (msg) => {
                 await bot.sendMessage(chatId, `На чем продолжим?`, {
                     reply_markup: {
                         keyboard: [
-                            ["/chat_therapy", "/additional_resources", "/community"]
+                            ["/chat_therapy"],
+                            ["/additional_resources"],
+                            ["/community"]
                         ]
                     }
                 })
