@@ -37,6 +37,10 @@ const users = {
 
 const commands = [
     {
+        command: "start",
+        description: "Запуск"
+    },
+    {
         command: "continue", 
         description: "Продолжить"
     },
@@ -86,7 +90,7 @@ bot.on('message', async (msg) => {
     function sendBotMessage() {
         bot.sendMessage(chatId, `Как вы себя чувствуете сейчас? Какие эмоции вы испытываете и почему? Если сложно описать, это нормально. Попробуйте рассказать о своих чувствах, это поможет вам понять себя лучше.?`);
     }
-    const bigInterval = 18 * 60* 60 * 1000;
+    const bigInterval = 24 * 60* 60 * 1000;
 
     function setReminders() {
     
@@ -99,7 +103,7 @@ bot.on('message', async (msg) => {
         endTime.setHours(23, 0, 0, 0);
     
 
-        let times_arr = [2, 6, 10, 14, 19];
+        let times_arr = [2, 5, 8, 11, 14];
         // let minute_arr = [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
         let currentTime = startTime.getTime();
         if (currentTime <= endTime.getTime()) {
@@ -114,6 +118,10 @@ bot.on('message', async (msg) => {
                 if ( wait_time > 0 ) {
                     setTimeout(sendBotMessage, wait_time);
                     console.log(wait_time)
+                } else {
+                    let time_last = bigInterval + wait_time;
+                    setTimeout(sendBotMessage, time_last);
+                    console.log(time_last);
                 }
 
             }
@@ -156,13 +164,36 @@ bot.on('message', async (msg) => {
                         ]
                     }
                 });
-            } else if ( msg.text === '/continue' ) {
+            }  else if ( msg.text === '/continue' ) {
+                
                 
                 bot.sendMessage(chatId, `С возврашением пользователь! Давай мы заново пройдемся по твоему памяти и вспомним о нас`);
                 await bot.sendMessage(chatId, `Мы твой личный психологический помощник-друг.`);
                 await bot.sendMessage(chatId, `Что может получить пользователь\nЗдесь ты можешь: обучиться эмоциональному интеллекту, выговориться, получить обратную связь, и это все абсолютно конфиденциально.`);
                 await bot.sendMessage(chatId, `Как работает наш чат-бот:\nПервый шаг-это пройти тест, где ты сможешь увидеть свое состояние на данный момент. каждый день, ты будешь получать новое, обучающее видео по эмоциональному интеллекту, если ты хочешь рассказать о каком-то болезненном моменте, тебе следует перейти в чат-терапию. После 5 раз в день, ты будешь получать сообщение, которое будет узнавать о ваших эмоциях в определенный момент, эта практика, поможет тебе понимать свои чувства.`);
+                await bot.sendVideo(chatId, './Доп материалы/IMG_5621.MOV');
+                await bot.sendMessage(chatId, `На чем продолжим?`, {
+                    reply_markup: {
+                        keyboard: [
+                            ["/chat_therapy", "/additional_resources", "/community"]
+                        ]
+                    }
+                })
                 
+            } else if ( msg.text === '/community') {
+                bot.sendMessage(chatId, `Залетайте в наше сообщество :)`, {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: 'Гоооу',
+                                    url: 'https://t.me/+YOHu0CRVmLczOWQy',
+                                    callback_data: 'community'
+                                }
+                            ]
+                        ]
+                    }
+                })
             } else if (msg.text === '/feedback') {
                 userData.feedback_stage = 'wait_feedback';
                 userStorage.set(chatId, userData);
