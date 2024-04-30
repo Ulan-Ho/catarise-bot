@@ -107,24 +107,21 @@ bot.on('message', async (msg) => {
         let times_arr = [2, 5, 8, 11, 14];
         // let minute_arr = [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
         let currentTime = startTime.getTime();
-        if (currentTime <= endTime.getTime()) {
+      
+        for (let i = 0; i < times_arr.length; i++ ) {
 
-            for (let i = 0; i < times_arr.length; i++ ) {
+            let send_time = new Date();
+            send_time.setHours(times_arr[i] , 0, 0, 0);
 
-                let send_time = new Date();
-                send_time.setHours(times_arr[i] , 0, 0, 0);
+            let wait_time = send_time - Date.now();
 
-                let wait_time = send_time - Date.now();
-
-                if ( wait_time > 0 ) {
-                    setTimeout(sendBotMessage, wait_time);
-                    console.log(wait_time)
-                } else {
-                    let time_last = bigInterval + wait_time;
-                    setTimeout(sendBotMessage, time_last);
-                    console.log(time_last);
-                }
-
+            if ( wait_time > 0 ) {
+                setTimeout(sendBotMessage, wait_time);
+                console.log(wait_time)
+            } else {
+                let time_last = bigInterval + wait_time;
+                setTimeout(sendBotMessage, time_last);
+                console.log(time_last);
             }
         }
     }
